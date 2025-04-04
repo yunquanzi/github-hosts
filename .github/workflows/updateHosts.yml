@@ -3,7 +3,7 @@ name: Github-Hosts
 on:
   push:
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '  * * *'
 
 jobs:
   build:
@@ -13,6 +13,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth:   # 获取完整 Git 历史（避免浅克隆问题）
 
       - name: Set up JDK 21
         uses: actions/setup-java@v3
@@ -42,13 +44,16 @@ jobs:
             git commit -m "update hosts and readme"
           fi
 
+      - name: Pull latest changes (避免冲突)
+        run: git pull origin master --rebase
+
       - name: Check on failures
         if: steps.commit.outputs.status == 'failure'
         run: exit 1
 
       - name: Push changes
-        uses: ad-m/github-push-action@v0.6.0
+        uses: ad-m/github-push-action@v.6.
         with:
-          force: true
+          force: true  # 仍然保留 force，以防万一
           branch: master
           github_token: ${{ secrets.GITHUB_TOKEN }}
