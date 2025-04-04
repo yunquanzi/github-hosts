@@ -52,7 +52,7 @@ jobs:
         run: exit 1
 
       - name: Push changes
-        uses: ad-m/github-push-action@v.6.
+        uses: ad-m/github-push-action@v0.6
         with:
           force: true  # 仍然保留 force，以防万一
           branch: master
